@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You</title>
+
+<style>
+body {
+  background: #f5f0f2;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Overlays */
+#fireworks, #romance {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Card */
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  text-align: center;
+  z-index: 2;
+}
+
+img {
+  width: 240px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+h2 { color: #c94f7c; }
+p { color: #333; line-height: 1.6; }
+
+button {
+  padding: 12px 28px;
+  font-size: 16px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.open { background: #c94f7c; color: white; }
+.yes { background: #4CAF50; color: white; }
+.no { background: #d9534f; color: white; }
+.back { background: #ccc; color: #333; }
+
+/* Envelope */
+.envelope {
+  font-size: 64px;
+  animation: float 2.5s ease-in-out infinite;
+}
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+/* Fireworks */
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: explode 2s ease-out forwards;
+}
+@keyframes explode {
+  from { transform: translate(0,0) scale(1); opacity: 1; }
+  to {
+    transform: translate(var(--x), var(--y)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* Romance particles */
+.heart, .rainbow {
+  position: absolute;
+  font-size: 20px;
+  opacity: 0;
+  animation: floatUp 6s linear forwards;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="fireworks"></div>
+<div id="romance"></div>
+
+<!-- 💌 LETTER -->
+<div class="card" id="letter">
+  <div class="envelope">💌</div>
+  <h2>Happy Valentine’s Day</h2>
+  <p>
+    Dear <strong>Zaina</strong>,<br><br>
+    I made this just for you.
+  </p>
+  <button class="open" onclick="openLetter()">Open</button>
+</div>
+
+<!-- 🐱 QUESTION -->
+<div class="card" id="q" style="display:none;">
+  <img src="cat.jpg">
+  <p>
+    I know you’re not romantically ready right now, and I respect that.
+    <br><br>
+    I just wanted you to know that
+    <br><br>
+    you’re thought of fondly, and this was made with warmth, not expectation.
+    <br><br>
+    Would you like to go on a date with me in the future when you are ready?
+  </p>
+  <button class="yes" onclick="showYes()">Yes</button>
+  <button class="no" onclick="showNo()">No</button>
+</div>
+
+<!-- 🎉 YES -->
+<div class="card" id="y" style="display:none;">
+  <img src="yes-cat.jpg">
+  <h2>Yayyy!! :3</h2>
+  <p>
+    This genuinely makes me really happy.
+    <br><br>
+    No rush at all... we’ll take things at your pace.
+    <br><br>
+    When the time feels right months, years 
+    <br>
+    I’d love to fly to your city
+    <br>
+    and take you out in Amman 
+  </p>
+  <button class="open" onclick="goNext()">Next</button>
+  <button class="back" onclick="goBack()">Go back</button>
+</div>
+
+<!-- 🎬 MOVIE PAGE -->
+<div class="card" id="movie" style="display:none;">
+  <img src="movie-cat.jpg">
+  <h2>The princess of rom-coms… 👑🎬</h2>
+  <p>
+    may I ask for another recommendation?
+    <br><br>
+    Legally Blonde was 10/10 💖
+  </p>
+  <button class="back" onclick="goBack()">Go back</button>
+</div>
+
+<!-- ❌ NO -->
+<div class="card" id="n" style="display:none;">
+  <img src="no-cat.jpg">
+  <p>
+    Thank you for being honest 🤍<br>
+    No pressure. No hard feelings.
+  </p>
+  <button class="back" onclick="goBack()">Go back</button>
+</div>
+
+<script>
+let fireworkLoop, romanceLoop;
+
+function openLetter(){
+  letter.style.display="none";
+  q.style.display="block";
+}
+
+function showYes(){
+  q.style.display="none";
+  y.style.display="block";
+  startFireworks();
+}
+
+function showNo(){
+  q.style.display="none";
+  n.style.display="block";
+}
+
+function goNext(){
+  y.style.display="none";
+  movie.style.display="block";
+  startRomance();
+}
+
+function goBack(){
+  stopFireworks();
+  stopRomance();
+  letter.style.display="block";
+  q.style.display="none";
+  y.style.display="none";
+  n.style.display="none";
+  movie.style.display="none";
+}
+
+/* Fireworks */
+function startFireworks(){
+  if (fireworkLoop) return;
+  fireworkLoop = setInterval(createBurst, 700);
+}
+function stopFireworks(){
+  clearInterval(fireworkLoop);
+  fireworkLoop = null;
+  fireworks.innerHTML="";
+}
+function createBurst(){
+  const colors=["#ff0000","#ff7f00","#ffff00","#00ff00","#00ffff","#0000ff","#8a2be2","#ff1493"];
+  const cx=Math.random()*innerWidth, cy=Math.random()*innerHeight*0.7;
+  for(let i=0;i<40;i++){
+    const p=document.createElement("div");
+    p.className="particle";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.left=cx+"px"; p.style.top=cy+"px";
+    p.style.setProperty("--x",(Math.random()*600-300)+"px");
+    p.style.setProperty("--y",(Math.random()*600-300)+"px");
+    fireworks.appendChild(p);
+    setTimeout(()=>p.remove(),2000);
+  }
+}
+
+/* Romance */
+function startRomance(){
+  if (romanceLoop) return;
+  romanceLoop=setInterval(createRomance,500);
+}
+function stopRomance(){
+  clearInterval(romanceLoop);
+  romanceLoop=null;
+  romance.innerHTML="";
+}
+function createRomance(){
+  const el=document.createElement("div");
+  const isHeart=Math.random()>0.5;
+  el.className=isHeart?"heart":"rainbow";
+  el.textContent=isHeart?"💖":"🌈";
+  el.style.left=Math.random()*innerWidth+"px";
+  el.style.bottom="-40px";
+  el.style.fontSize=(18+Math.random()*16)+"px";
+  romance.appendChild(el);
+  setTimeout(()=>el.remove(),6000);
+}
+</script>
+
+</body>
+</html>
