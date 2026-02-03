@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Letter for Zaina</title>
 
-<!-- Pixel font -->
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
@@ -16,7 +15,7 @@ body {
   overflow: hidden;
 }
 
-/* 💕 Soft floating hearts background */
+/*  Floating hearts background (BIGGER) */
 #hearts {
   position: fixed;
   inset: 0;
@@ -27,9 +26,9 @@ body {
 .heart-bg {
   position: absolute;
   color: #d88aa3;
-  font-size: 10px;
+  font-size: 18px;
   opacity: 0;
-  animation: drift 14s linear forwards;
+  animation: drift 16s linear forwards;
 }
 
 @keyframes drift {
@@ -68,9 +67,7 @@ img {
   margin-bottom: 20px;
 }
 
-h2 {
-  color: #c94f7c;
-}
+h2 { color: #c94f7c; }
 
 .pixel-title {
   font-family: 'Press Start 2P', cursive;
@@ -97,7 +94,7 @@ button {
 .no { background: #d9534f; color: white; }
 .back { background: #ccc; color: #333; }
 
-/* 🧱 Cute pixel envelope */
+/*  Cute pixel envelope */
 .pixel-envelope {
   width: 112px;
   height: 80px;
@@ -108,7 +105,6 @@ button {
   animation: float 2.8s ease-in-out infinite;
 }
 
-/* outline */
 .pixel-envelope::before {
   content: "";
   position: absolute;
@@ -116,7 +112,6 @@ button {
   background: #c94f7c;
 }
 
-/* inner paper */
 .pixel-envelope::after {
   content: "";
   position: absolute;
@@ -124,7 +119,6 @@ button {
   background: #f6d6dc;
 }
 
-/* folds */
 .pixel-left {
   position: absolute;
   left: 6px;
@@ -145,7 +139,6 @@ button {
   clip-path: polygon(100% 0, 100% 100%, 0 50%);
 }
 
-/* flap */
 .pixel-flap {
   position: absolute;
   top: 6px;
@@ -162,7 +155,6 @@ button {
   transform: rotateX(180deg);
 }
 
-/* seal */
 .pixel-seal {
   position: absolute;
   bottom: 22px;
@@ -233,7 +225,7 @@ button {
   <h2 class="pixel-title">♡ Letter for Zaina ♡</h2>
 </div>
 
-<!-- 🐱 QUESTION -->
+<!-- QUESTION -->
 <div class="card" id="q" style="display:none;">
   <img src="cat.jpg">
   <p>
@@ -247,17 +239,18 @@ button {
   <button class="no" onclick="showNo()">No</button>
 </div>
 
-<!-- 🎉 YES -->
+<!-- YES -->
 <div class="card" id="y" style="display:none;">
   <img src="yes-cat.jpg">
   <h2>Yayyy!! :3</h2>
   <p>
     This genuinely makes me really happy.
     <br><br>
-    No rush at all I can wait 
-    months/years to have a chance to meet you
+    No rush at all — we’ll take things at your pace.
     <br><br>
-    Fly to your city, Amman
+    When the time feels right,
+    I’d love to fly to your city
+    and take you out in Amman. ✨✈️
   </p>
   <button class="open" onclick="goNext()">Next</button>
   <button class="back" onclick="goBack()">Go back</button>
@@ -276,15 +269,16 @@ button {
   <button class="back" onclick="goBack()">Go back</button>
 </div>
 
-<!-- 🌸 END -->
+<!--  END -->
 <div class="card" id="end" style="display:none;">
   <p>
     Thank you for reading 🤍<br><br>
+    Take your time.
   </p>
   <button class="back" onclick="goBack()">Go back</button>
 </div>
 
-<!-- ❌ NO -->
+<!--  NO -->
 <div class="card" id="n" style="display:none;">
   <img src="no-cat.jpg">
   <p>
@@ -383,15 +377,16 @@ function stopRomance(){
   romance.innerHTML="";
 }
 
-/* Background hearts */
+/* Background hearts (bigger + varied) */
 setInterval(()=>{
   const h=document.createElement("div");
   h.className="heart-bg";
   h.textContent="♥";
   h.style.left=Math.random()*innerWidth+"px";
-  h.style.bottom="-20px";
+  h.style.bottom="-30px";
+  h.style.fontSize=(14 + Math.random()*10)+"px";
   hearts.appendChild(h);
-  setTimeout(()=>h.remove(),14000);
+  setTimeout(()=>h.remove(),16000);
 },1200);
 </script>
 
