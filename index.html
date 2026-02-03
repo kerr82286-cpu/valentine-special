@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>Letter for Zaina</title>
 
+<!-- Pixel font -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 <style>
 body {
   background: #f8f1f4;
@@ -13,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-/* 💕 Floating hearts background (ALL pages) */
+/* 💕 Softer floating hearts background */
 #hearts {
   position: fixed;
   inset: 0;
@@ -23,15 +26,15 @@ body {
 
 .heart-bg {
   position: absolute;
-  color: #d36b8a;
-  font-size: 12px;
+  color: #d88aa3;
+  font-size: 10px;
   opacity: 0;
-  animation: drift 10s linear forwards;
+  animation: drift 14s linear forwards;
 }
 
 @keyframes drift {
   0% { transform: translateY(0); opacity: 0; }
-  10% { opacity: 0.6; }
+  15% { opacity: 0.5; }
   100% { transform: translateY(-120vh); opacity: 0; }
 }
 
@@ -65,8 +68,20 @@ img {
   margin-bottom: 20px;
 }
 
-h2 { color: #c94f7c; }
-p { color: #333; line-height: 1.6; }
+h2 {
+  color: #c94f7c;
+}
+
+.pixel-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+p {
+  color: #333;
+  line-height: 1.6;
+}
 
 button {
   padding: 12px 28px;
@@ -89,7 +104,6 @@ button {
   margin: 0 auto 16px;
   position: relative;
   cursor: pointer;
-  animation: float 2.5s ease-in-out infinite;
 }
 
 .pixel-envelope .base {
@@ -103,11 +117,17 @@ button {
 .pixel-envelope .flap {
   position: absolute;
   inset: 0;
+  transform-origin: top;
   background:
     linear-gradient(135deg, transparent 50%, #c94f7c 50%) left,
     linear-gradient(225deg, transparent 50%, #c94f7c 50%) right;
   background-size: 50% 100%;
   background-repeat: no-repeat;
+  transition: transform 0.6s ease;
+}
+
+.pixel-envelope.open .flap {
+  transform: rotateX(180deg);
 }
 
 .pixel-envelope .seal {
@@ -117,12 +137,12 @@ button {
   transform: translateX(-50%);
   color: #c94f7c;
   font-size: 14px;
+  transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-  100% { transform: translateY(0); }
+.pixel-envelope.open .seal {
+  transform: translate(-50%, -20px);
+  opacity: 0;
 }
 
 /* Fireworks */
@@ -142,7 +162,7 @@ button {
   }
 }
 
-/* Romance (movie page) */
+/* Romance */
 .heart, .rainbow {
   position: absolute;
   font-size: 20px;
@@ -166,12 +186,12 @@ button {
 
 <!-- 📩 START -->
 <div class="card" id="start">
-  <div class="pixel-envelope" onclick="openStart()">
+  <div class="pixel-envelope" id="env" onclick="openStart()">
     <div class="base"></div>
     <div class="flap"></div>
     <div class="seal">♥</div>
   </div>
-  <h2>♡ Letter for Zaina ♡</h2>
+  <h2 class="pixel-title">♡ Letter for Zaina ♡</h2>
 </div>
 
 <!-- 🐱 QUESTION -->
@@ -180,9 +200,7 @@ button {
   <p>
     I know you’re not romantically ready right now, and I respect that.
     <br><br>
-    I just wanted you to know that
-    <br><br>
-    you’re thought of fondly, and this was made with warmth, not expectation.
+    You’re thought of fondly, and this was made with warmth, not expectation.
     <br><br>
     Would you like to go on a date with me in the future when you are ready?
   </p>
@@ -197,12 +215,10 @@ button {
   <p>
     This genuinely makes me really happy.
     <br><br>
-    No rush at all... we’ll take things at your pace.
+    No rush at all — we’ll take things at your pace.
     <br><br>
     When the time feels right,
-    <br>
     I’d love to fly to your city
-    <br>
     and take you out in Amman. ✨✈️
   </p>
   <button class="open" onclick="goNext()">Next</button>
@@ -217,6 +233,16 @@ button {
     may I ask for another recommendation?
     <br><br>
     Legally Blonde was 10/10 💖
+  </p>
+  <button class="open" onclick="goEnd()">Next</button>
+  <button class="back" onclick="goBack()">Go back</button>
+</div>
+
+<!-- 🌸 END -->
+<div class="card" id="end" style="display:none;">
+  <p>
+    Thank you for reading 🤍<br><br>
+    Take your time.
   </p>
   <button class="back" onclick="goBack()">Go back</button>
 </div>
@@ -234,10 +260,13 @@ button {
 <script>
 let fireworkLoop, romanceLoop;
 
-/* Start */
+/* Envelope open */
 function openStart(){
-  start.style.display="none";
-  q.style.display="block";
+  env.classList.add("open");
+  setTimeout(()=>{
+    start.style.display="none";
+    q.style.display="block";
+  },600);
 }
 
 /* Navigation */
@@ -246,18 +275,19 @@ function showYes(){
   y.style.display="block";
   startFireworks();
 }
-
 function showNo(){
   q.style.display="none";
   n.style.display="block";
 }
-
 function goNext(){
   y.style.display="none";
   movie.style.display="block";
   startRomance();
 }
-
+function goEnd(){
+  movie.style.display="none";
+  end.style.display="block";
+}
 function goBack(){
   stopFireworks();
   stopRomance();
@@ -266,6 +296,8 @@ function goBack(){
   y.style.display="none";
   n.style.display="none";
   movie.style.display="none";
+  end.style.display="none";
+  env.classList.remove("open");
 }
 
 /* Fireworks */
@@ -298,21 +330,20 @@ function createBurst(){
 /* Romance */
 function startRomance(){
   if (romanceLoop) return;
-  romanceLoop=setInterval(createRomance,500);
+  romanceLoop=setInterval(()=>{
+    const el=document.createElement("div");
+    el.className=Math.random()>0.5?"heart":"rainbow";
+    el.textContent=el.className==="heart"?"💖":"🌈";
+    el.style.left=Math.random()*innerWidth+"px";
+    el.style.bottom="-40px";
+    romance.appendChild(el);
+    setTimeout(()=>el.remove(),6000);
+  },700);
 }
 function stopRomance(){
   clearInterval(romanceLoop);
   romanceLoop=null;
   romance.innerHTML="";
-}
-function createRomance(){
-  const el=document.createElement("div");
-  el.className=Math.random()>0.5?"heart":"rainbow";
-  el.textContent=el.className==="heart"?"💖":"🌈";
-  el.style.left=Math.random()*innerWidth+"px";
-  el.style.bottom="-40px";
-  romance.appendChild(el);
-  setTimeout(()=>el.remove(),6000);
 }
 
 /* Background hearts */
@@ -323,8 +354,8 @@ setInterval(()=>{
   h.style.left=Math.random()*innerWidth+"px";
   h.style.bottom="-20px";
   hearts.appendChild(h);
-  setTimeout(()=>h.remove(),10000);
-},600);
+  setTimeout(()=>h.remove(),14000);
+},1200);
 </script>
 
 </body>
