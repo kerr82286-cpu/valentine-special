@@ -2,15 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You</title>
+<title>Letter for Zaina</title>
 
 <style>
 body {
-  background: #f5f0f2;
+  background: #f8f1f4;
   font-family: Arial, sans-serif;
   margin: 0;
   height: 100vh;
   overflow: hidden;
+}
+
+/* 💕 Hearts background (always on) */
+#hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heart-bg {
+  position: absolute;
+  color: #d36b8a;
+  font-size: 12px;
+  opacity: 0;
+  animation: drift 10s linear infinite;
+}
+
+@keyframes drift {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% { opacity: 0.6; }
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
 }
 
 /* Overlays */
@@ -21,7 +49,7 @@ body {
   z-index: 1;
 }
 
-/* Card */
+/* Cards */
 .card {
   position: absolute;
   top: 50%;
@@ -43,8 +71,14 @@ img {
   margin-bottom: 20px;
 }
 
-h2 { color: #c94f7c; }
-p { color: #333; line-height: 1.6; }
+h2 {
+  color: #c94f7c;
+}
+
+p {
+  color: #333;
+  line-height: 1.6;
+}
 
 button {
   padding: 12px 28px;
@@ -60,14 +94,20 @@ button {
 .no { background: #d9534f; color: white; }
 .back { background: #ccc; color: #333; }
 
-/* Envelope */
+/* 📩 Envelope start screen */
+#start {
+  text-align: center;
+}
+
 .envelope {
-  font-size: 64px;
+  font-size: 72px;
+  cursor: pointer;
   animation: float 2.5s ease-in-out infinite;
 }
+
 @keyframes float {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  50% { transform: translateY(-14px); }
   100% { transform: translateY(0); }
 }
 
@@ -79,6 +119,7 @@ button {
   border-radius: 50%;
   animation: explode 2s ease-out forwards;
 }
+
 @keyframes explode {
   from { transform: translate(0,0) scale(1); opacity: 1; }
   to {
@@ -87,13 +128,14 @@ button {
   }
 }
 
-/* Romance particles */
+/* Romance */
 .heart, .rainbow {
   position: absolute;
   font-size: 20px;
   opacity: 0;
   animation: floatUp 6s linear forwards;
 }
+
 @keyframes floatUp {
   0% { transform: translateY(0) scale(0.8); opacity: 0; }
   10% { opacity: 1; }
@@ -104,25 +146,23 @@ button {
 
 <body>
 
+<div id="hearts"></div>
 <div id="fireworks"></div>
 <div id="romance"></div>
 
-<!-- 💌 LETTER -->
-<div class="card" id="letter">
-  <div class="envelope">💌</div>
-  <h2>Happy Valentine’s Day</h2>
-  <p>
-    Dear <strong>Zaina</strong>,<br><br>
-    I made this just for you.
-  </p>
-  <button class="open" onclick="openLetter()">Open</button>
+<!-- 📩 START -->
+<div class="card" id="start">
+  <div class="envelope" onclick="openStart()">💌</div>
+  <h2>♡ Letter for Zaina ♡</h2>
 </div>
 
 <!-- 🐱 QUESTION -->
 <div class="card" id="q" style="display:none;">
   <img src="cat.jpg">
   <p>
-    I know you’re not romantically ready right now, and I respect that
+    I know you’re not romantically ready right now, and I respect that.
+    <br><br>
+    I just wanted you to know that
     <br><br>
     you’re thought of fondly, and this was made with warmth, not expectation.
     <br><br>
@@ -139,19 +179,19 @@ button {
   <p>
     This genuinely makes me really happy.
     <br><br>
-    No rush at all...
+    No rush at all... we’ll take things at your pace.
     <br><br>
-    When the time feels right months, years 
+    When the time feels right,
     <br>
     I’d love to fly to your city
     <br>
-    and take you out in Amman 
+    and take you out in Amman. ✨✈️
   </p>
   <button class="open" onclick="goNext()">Next</button>
   <button class="back" onclick="goBack()">Go back</button>
 </div>
 
-<!-- 🎬 MOVIE PAGE -->
+<!-- 🎬 MOVIE -->
 <div class="card" id="movie" style="display:none;">
   <img src="movie-cat.jpg">
   <h2>The princess of rom-coms… 👑🎬</h2>
@@ -176,32 +216,31 @@ button {
 <script>
 let fireworkLoop, romanceLoop;
 
-function openLetter(){
-  letter.style.display="none";
+/* Start */
+function openStart(){
+  start.style.display="none";
   q.style.display="block";
 }
 
+/* Navigation */
 function showYes(){
   q.style.display="none";
   y.style.display="block";
   startFireworks();
 }
-
 function showNo(){
   q.style.display="none";
   n.style.display="block";
 }
-
 function goNext(){
   y.style.display="none";
   movie.style.display="block";
   startRomance();
 }
-
 function goBack(){
   stopFireworks();
   stopRomance();
-  letter.style.display="block";
+  start.style.display="block";
   q.style.display="none";
   y.style.display="none";
   n.style.display="none";
@@ -211,11 +250,11 @@ function goBack(){
 /* Fireworks */
 function startFireworks(){
   if (fireworkLoop) return;
-  fireworkLoop = setInterval(createBurst, 700);
+  fireworkLoop=setInterval(createBurst,700);
 }
 function stopFireworks(){
   clearInterval(fireworkLoop);
-  fireworkLoop = null;
+  fireworkLoop=null;
   fireworks.innerHTML="";
 }
 function createBurst(){
@@ -245,15 +284,24 @@ function stopRomance(){
 }
 function createRomance(){
   const el=document.createElement("div");
-  const isHeart=Math.random()>0.5;
-  el.className=isHeart?"heart":"rainbow";
-  el.textContent=isHeart?"💖":"🌈";
+  el.className=Math.random()>0.5?"heart":"rainbow";
+  el.textContent=el.className==="heart"?"💖":"🌈";
   el.style.left=Math.random()*innerWidth+"px";
   el.style.bottom="-40px";
-  el.style.fontSize=(18+Math.random()*16)+"px";
   romance.appendChild(el);
   setTimeout(()=>el.remove(),6000);
 }
+
+/* Background hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart-bg";
+  h.textContent="♥";
+  h.style.left=Math.random()*innerWidth+"px";
+  h.style.bottom="-20px";
+  hearts.appendChild(h);
+  setTimeout(()=>h.remove(),10000);
+},600);
 </script>
 
 </body>
