@@ -230,7 +230,26 @@ button {
 </div>
 
 <script>
-/* TEXT CONTENT */
+/* =====================
+   PAGE HISTORY LOGIC
+===================== */
+let pageHistory = [];
+
+function showPage(page){
+  start.style.display = "none";
+  q.style.display = "none";
+  y.style.display = "none";
+  movie.style.display = "none";
+  noPage.style.display = "none";
+  end.style.display = "none";
+
+  page.style.display = "block";
+  pageHistory.push(page);
+}
+
+/* =====================
+   TEXT CONTENT
+===================== */
 const mainText =
 `I know you’re not romantically ready right now, and I respect that.
 
@@ -258,7 +277,9 @@ No hard feelings.`;
 
 const endText = `Thank you for reading.`;
 
-/* TYPEWRITER (slow) */
+/* =====================
+   TYPEWRITER (slow)
+===================== */
 function typeText(el, text, speed = 70){
   el.textContent = "";
   const words = text.split(" ");
@@ -270,55 +291,49 @@ function typeText(el, text, speed = 70){
   }, speed);
 }
 
-/* START */
+/* =====================
+   NAVIGATION
+===================== */
 function openStart(){
   env.classList.add("open");
   setTimeout(() => {
-    start.style.display = "none";
-    q.style.display = "block";
+    showPage(q);
     typeText(questionText, mainText);
   }, 600);
 }
 
-/* NAVIGATION */
 function showYes(){
-  q.style.display = "none";
-  y.style.display = "block";
+  showPage(y);
   typeText(yesText, yesTextContent);
   startFireworks();
 }
 
 function showNo(){
-  q.style.display = "none";
-  noPage.style.display = "block";
+  showPage(noPage);
   typeText(noText, noTextContent);
 }
 
 function goNext(){
   stopFireworks();
-  y.style.display = "none";
-  movie.style.display = "block";
+  showPage(movie);
   typeText(movieTextEl, movieText);
 }
 
 function goEnd(){
-  movie.style.display = "none";
-  end.style.display = "block";
+  showPage(end);
   typeText(endTextEl, endText);
 }
 
 function goBack(){
   stopFireworks();
-  start.style.display = "block";
-  q.style.display = "none";
-  y.style.display = "none";
-  movie.style.display = "none";
-  noPage.style.display = "none";
-  end.style.display = "none";
-  env.classList.remove("open");
+  pageHistory.pop(); // remove current
+  const prev = pageHistory[pageHistory.length - 1];
+  if(prev) showPage(prev);
 }
 
-/* FIREWORKS */
+/* =====================
+   FIREWORKS
+===================== */
 let fw;
 function startFireworks(){
   if (fw) return;
@@ -345,7 +360,9 @@ function stopFireworks(){
   fireworks.innerHTML = "";
 }
 
-/* BACKGROUND HEARTS */
+/* =====================
+   BACKGROUND HEARTS
+===================== */
 setInterval(() => {
   const h = document.createElement("div");
   h.className = "heart-bg";
@@ -357,7 +374,9 @@ setInterval(() => {
   setTimeout(() => h.remove(), 18000);
 }, 1400);
 
-/* ELEMENT REFERENCES */
+/* =====================
+   ELEMENT REFERENCES
+===================== */
 const questionText = document.getElementById("questionText");
 const yesText = document.getElementById("yesText");
 const movieTextEl = document.getElementById("movieText");
