@@ -66,7 +66,6 @@ img {
   margin-bottom: 18px;
 }
 
-/* Text */
 p {
   color: #000;
   font-size: 14px;
@@ -180,7 +179,7 @@ button {
 <div id="hearts"></div>
 <div id="fireworks"></div>
 
-<!-- START (NO typing) -->
+<!-- START -->
 <div class="card" id="start">
   <div class="pixel-envelope" id="env" onclick="openStart()">
     <div class="pixel-left"></div>
@@ -217,6 +216,12 @@ button {
   <button class="back" onclick="goBack()">Go back</button>
 </div>
 
+<!-- NO -->
+<div class="card" id="noPage" style="display:none;">
+  <p id="noText"></p>
+  <button class="back" onclick="goBack()">Go back</button>
+</div>
+
 <!-- END -->
 <div class="card" id="end" style="display:none;">
   <p id="endText"></p>
@@ -224,7 +229,7 @@ button {
 </div>
 
 <script>
-/* TEXT */
+/* TEXT CONTENT */
 const mainText =
 `I know you’re not romantically ready right now, and I respect that.
 
@@ -232,110 +237,131 @@ You’re thought of fondly, and this was made with warmth, not expectation.
 
 Would you like to go on a date with me in the future when you are ready?`;
 
+const yesTextContent =
+`This genuinely makes me really happy.
+
+No rush at all.
+When the time feels right,
+I’d love to fly to your city Amman for a date.`;
+
 const movieText =
 `may I ask for another recommendation?
 
 Legally Blonde was 10/10`;
 
+const noTextContent =
+`Thank you for being honest.
+
+No pressure.
+No hard feelings.`;
+
 const endText = `Thank you for reading.`;
 
-/* TYPEWRITER */
-function typeText(el, text, speed=40){
+/* TYPEWRITER (slow) */
+function typeText(el, text, speed = 70){
   el.textContent = "";
   const words = text.split(" ");
   let i = 0;
-  const interval = setInterval(()=>{
-    el.textContent += (i===0?"":" ") + words[i];
+  const interval = setInterval(() => {
+    el.textContent += (i === 0 ? "" : " ") + words[i];
     i++;
-    if(i >= words.length) clearInterval(interval);
+    if (i >= words.length) clearInterval(interval);
   }, speed);
 }
 
 /* START */
 function openStart(){
   env.classList.add("open");
-  setTimeout(()=>{
-    start.style.display="none";
-    q.style.display="block";
+  setTimeout(() => {
+    start.style.display = "none";
+    q.style.display = "block";
     typeText(questionText, mainText);
-  },600);
+  }, 600);
 }
 
-/* NAV */
+/* NAVIGATION */
 function showYes(){
-  q.style.display="none";
-  y.style.display="block";
-  typeText(yesText, mainText);
+  q.style.display = "none";
+  y.style.display = "block";
+  typeText(yesText, yesTextContent);
   startFireworks();
 }
+
 function showNo(){
-  q.style.display="none";
-  end.style.display="block";
-  typeText(endTextEl, endText);
+  q.style.display = "none";
+  noPage.style.display = "block";
+  typeText(noText, noTextContent);
 }
+
 function goNext(){
   stopFireworks();
-  y.style.display="none";
-  movie.style.display="block";
+  y.style.display = "none";
+  movie.style.display = "block";
   typeText(movieTextEl, movieText);
 }
+
 function goEnd(){
-  movie.style.display="none";
-  end.style.display="block";
+  movie.style.display = "none";
+  end.style.display = "block";
   typeText(endTextEl, endText);
 }
+
 function goBack(){
   stopFireworks();
-  start.style.display="block";
-  q.style.display="none";
-  y.style.display="none";
-  movie.style.display="none";
-  end.style.display="none";
+  start.style.display = "block";
+  q.style.display = "none";
+  y.style.display = "none";
+  movie.style.display = "none";
+  noPage.style.display = "none";
+  end.style.display = "none";
   env.classList.remove("open");
 }
 
 /* FIREWORKS */
 let fw;
 function startFireworks(){
-  if(fw) return;
-  fw = setInterval(()=>{
-    const cx=Math.random()*innerWidth, cy=Math.random()*innerHeight*0.6;
-    for(let i=0;i<30;i++){
-      const p=document.createElement("div");
-      p.className="particle";
-      p.style.background=`hsl(${Math.random()*360},100%,60%)`;
-      p.style.left=cx+"px";
-      p.style.top=cy+"px";
-      p.style.setProperty("--x",(Math.random()*500-250)+"px");
-      p.style.setProperty("--y",(Math.random()*500-250)+"px");
+  if (fw) return;
+  fw = setInterval(() => {
+    const cx = Math.random() * innerWidth;
+    const cy = Math.random() * innerHeight * 0.6;
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.style.background = `hsl(${Math.random()*360},100%,60%)`;
+      p.style.left = cx + "px";
+      p.style.top = cy + "px";
+      p.style.setProperty("--x", (Math.random()*500 - 250) + "px");
+      p.style.setProperty("--y", (Math.random()*500 - 250) + "px");
       fireworks.appendChild(p);
-      setTimeout(()=>p.remove(),2000);
+      setTimeout(() => p.remove(), 2000);
     }
-  },800);
+  }, 800);
 }
+
 function stopFireworks(){
   clearInterval(fw);
-  fw=null;
-  fireworks.innerHTML="";
+  fw = null;
+  fireworks.innerHTML = "";
 }
 
 /* BACKGROUND HEARTS */
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart-bg";
-  h.textContent="♥";
-  h.style.left=Math.random()*innerWidth+"px";
-  h.style.bottom="-30px";
-  h.style.fontSize=(18+Math.random()*14)+"px";
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart-bg";
+  h.textContent = "♥";
+  h.style.left = Math.random() * innerWidth + "px";
+  h.style.bottom = "-30px";
+  h.style.fontSize = (18 + Math.random() * 14) + "px";
   hearts.appendChild(h);
-  setTimeout(()=>h.remove(),18000);
-},1400);
+  setTimeout(() => h.remove(), 18000);
+}, 1400);
 
-/* ELEMENTS */
-const questionText=document.getElementById("questionText");
-const yesText=document.getElementById("yesText");
-const movieTextEl=document.getElementById("movieText");
-const endTextEl=document.getElementById("endText");
+/* ELEMENT REFERENCES */
+const questionText = document.getElementById("questionText");
+const yesText = document.getElementById("yesText");
+const movieTextEl = document.getElementById("movieText");
+const noText = document.getElementById("noText");
+const endTextEl = document.getElementById("endText");
 </script>
 
 </body>
