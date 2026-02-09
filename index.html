@@ -1,155 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>💌 Totally Not a Scam</title>
+<meta charset="UTF-8">
+<title>Letter for Zaina</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
-*{
-  box-sizing:border-box;
-}
-
 body{
+  background:#f6c1d1;
+  font-family:'Press Start 2P', cursive;
   margin:0;
-  font-family:'Press Start 2P', monospace;
-  background:#f7c8d6;
+  height:100vh;
   overflow:hidden;
 }
 
 /* floating hearts */
-.hearts{
+#hearts{
   position:fixed;
   inset:0;
   pointer-events:none;
   z-index:0;
 }
-
-.heart{
+.heart-bg{
   position:absolute;
-  width:22px;
-  height:22px;
-  background:white;
-  transform:rotate(45deg);
-  opacity:0.5;
-  animation:float 10s linear infinite;
+  color:white;
+  opacity:0;
+  animation:drift 18s linear forwards;
+}
+@keyframes drift{
+  0%{transform:translateY(0);opacity:0;}
+  20%{opacity:.6;}
+  100%{transform:translateY(-120vh);opacity:0;}
 }
 
-.heart::before,
-.heart::after{
-  content:'';
-  position:absolute;
-  width:22px;
-  height:22px;
-  background:white;
-  border-radius:50%;
-}
-
-.heart::before{ top:-11px; left:0; }
-.heart::after{ left:-11px; top:0; }
-
-@keyframes float{
-  from{ transform:translateY(100vh) rotate(45deg); }
-  to{ transform:translateY(-120vh) rotate(45deg); }
-}
-
-/* pages */
-.page{
-  display:none;
-  position:absolute;
+/* fireworks */
+#fireworks{
+  position:fixed;
   inset:0;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  pointer-events:none;
+  z-index:1;
 }
 
+/* card */
 .card{
-  background:white;
-  padding:30px;
-  border-radius:16px;
-  max-width:520px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#fff;
+  padding:28px;
+  border-radius:18px;
   width:90%;
+  max-width:440px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
   text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+  z-index:2;
+}
+
+img{
+  width:240px;
+  border-radius:12px;
+  margin-bottom:18px;
+}
+
+p{
+  color:#000;
+  font-size:14px;
+  line-height:1.9;
+  white-space:pre-line;
+}
+
+.title-pink{
+  color:#c94f7c;
+  font-size:15px;
+  margin-bottom:16px;
 }
 
 /* buttons */
 button{
-  font-family:'Press Start 2P', monospace;
-  padding:12px 18px;
-  margin:12px;
+  margin-top:20px;
+  padding:10px 26px;
+  font-size:14px;
   border:none;
   border-radius:10px;
   cursor:pointer;
 }
+.yes{background:#4CAF50;color:#fff;}
+.no{background:#d9534f;color:#fff;}
+.open{background:#c94f7c;color:#fff;}
+.back{background:#ccc;}
 
-.yes{ background:#4caf50; color:white; }
-.no{ background:#e53935; color:white; }
-.back{ background:#ddd; }
-
-/* images */
-img{
-  max-width:220px;
-  border-radius:10px;
-  margin:15px 0;
-}
-
-/* typed text */
-.typing{
-  font-size:14px;
-  line-height:1.8;
-  color:black;
-}
-
-/* pink titles */
-.pink{
-  color:#e91e63;
-}
-
-/* fireworks */
-canvas{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:3;
-}
-
-/* ===== ENVELOPE ===== */
-.envelope-wrapper{
+/* ===== REALISTIC ENVELOPE ===== */
+.envelope-wrap{
+  width:260px;
+  height:170px;
+  margin:0 auto 20px;
+  perspective:1200px;
   cursor:pointer;
 }
 
 .envelope{
   position:relative;
-  width:260px;
-  height:170px;
-  perspective:1000px;
+  width:100%;
+  height:100%;
 }
 
 .env-back{
   position:absolute;
   inset:0;
-  background:#f6b3a1;
-  border-radius:10px;
+  background:#f2b39b;
+  border-radius:8px;
 }
 
-.env-left{
-  position:absolute;
-  left:0;
-  width:50%;
-  height:100%;
-  background:#f3a290;
-  clip-path:polygon(0 0,100% 50%,0 100%);
-}
-
+.env-left,
 .env-right{
   position:absolute;
-  right:0;
+  top:0;
   width:50%;
   height:100%;
-  background:#f3a290;
+  background:#f0a98f;
+}
+.env-left{
+  left:0;
+  clip-path:polygon(0 0,100% 50%,0 100%);
+}
+.env-right{
+  right:0;
   clip-path:polygon(100% 0,100% 100%,0 50%);
 }
 
@@ -157,8 +134,8 @@ canvas{
   position:absolute;
   bottom:0;
   width:100%;
-  height:65%;
-  background:#ef9a87;
+  height:60%;
+  background:#ee9f86;
   clip-path:polygon(0 100%,50% 45%,100% 100%);
 }
 
@@ -167,143 +144,201 @@ canvas{
   top:0;
   width:100%;
   height:55%;
-  background:#f9c1b3;
+  background:#f7c2ac;
   clip-path:polygon(0 0,50% 100%,100% 0);
   transform-origin:top;
-  transition:transform 0.9s ease;
+  transition:transform .8s ease;
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:3;
+  z-index:4;
+}
+
+.env-text{
+  color:#fff;
+  font-size:12px;
+  letter-spacing:2px;
 }
 
 .env-letter{
   position:absolute;
   left:18px;
   right:18px;
-  top:35px;
+  top:40px;
   height:95px;
-  background:white;
+  background:#fff;
   border-radius:6px;
-  transform:translateY(30px);
-  transition:transform 0.9s ease;
-  z-index:2;
+  transform:translateY(40px);
+  transition:transform .8s ease;
+  z-index:3;
 }
 
+/* open animation */
 .envelope.open .env-flap{
   transform:rotateX(180deg);
 }
-
 .envelope.open .env-letter{
   transform:translateY(-10px);
 }
 
-.open-text{
-  color:white;
-  font-size:14px;
-  letter-spacing:2px;
+/* fireworks particles */
+.particle{
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  animation:explode 2s ease-out forwards;
+}
+@keyframes explode{
+  to{
+    transform:translate(var(--x),var(--y)) scale(.3);
+    opacity:0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="hearts" id="hearts"></div>
+<div id="hearts"></div>
+<div id="fireworks"></div>
 
 <!-- START -->
-<div class="page" id="start" style="display:flex;">
-  <div class="card">
-    <div class="envelope-wrapper" onclick="openEnvelope()">
-      <div class="envelope" id="env">
-        <div class="env-back"></div>
-        <div class="env-left"></div>
-        <div class="env-right"></div>
-        <div class="env-bottom"></div>
-        <div class="env-flap">
-          <span class="open-text">OPEN ME</span>
-        </div>
-        <div class="env-letter"></div>
+<div class="card" id="start">
+  <div class="envelope-wrap" onclick="openStart()">
+    <div class="envelope" id="env">
+      <div class="env-back"></div>
+      <div class="env-left"></div>
+      <div class="env-right"></div>
+      <div class="env-bottom"></div>
+      <div class="env-flap">
+        <div class="env-text">OPEN ME</div>
       </div>
+      <div class="env-letter"></div>
     </div>
-    <p style="margin-top:20px;">Letter for Zaina</p>
   </div>
+  <p>Letter for Zaina</p>
 </div>
 
 <!-- QUESTION -->
-<div class="page" id="question">
-  <div class="card">
-    <img src="cat.jpg">
-    <p class="typing" id="qText"></p>
-    <button class="yes" onclick="showYes()">Yes</button>
-    <button class="no" onclick="showNo()">No</button>
-    <button class="back" onclick="goBack()">Go back</button>
-  </div>
+<div class="card" id="q" style="display:none;">
+  <img src="cat.jpg">
+  <p id="questionText"></p>
+  <button class="yes" onclick="showYes()">Yes</button>
+  <button class="no" onclick="showNo()">No</button>
 </div>
 
 <!-- YES -->
-<div class="page" id="yes">
-  <div class="card">
-    <img src="yes-cat.jpg">
-    <h2 class="pink">Yayyy!! :3</h2>
-    <p class="typing" id="yesText"></p>
-    <button onclick="goMovie()">Next</button>
-    <button class="back" onclick="goBack()">Go back</button>
-  </div>
+<div class="card" id="y" style="display:none;">
+  <img src="yes-cat.jpg">
+  <div class="title-pink">Yayyy!! :3</div>
+  <p id="yesText"></p>
+  <button class="open" onclick="goNext()">Next</button>
+  <button class="back" onclick="goBack()">Go back</button>
 </div>
 
 <!-- MOVIE -->
-<div class="page" id="movie">
-  <div class="card">
-    <img src="movie-cat.jpg">
-    <h2 class="pink">👑🍓 Princess of Rom-Coms 🍓👑</h2>
-    <p class="typing" id="movieText"></p>
-    <button onclick="goEnd()">Next</button>
-    <button class="back" onclick="goBack()">Go back</button>
-  </div>
+<div class="card" id="movie" style="display:none;">
+  <img src="movie-cat.jpg">
+  <div class="title-pink"> The princess of rom-coms…</div>
+  <p id="movieText"></p>
+  <button class="open" onclick="goEnd()">Next</button>
+  <button class="back" onclick="goBack()">Go back</button>
 </div>
 
 <!-- NO -->
-<div class="page" id="no">
-  <div class="card">
-    <img src="no-cat.jpg">
-    <p class="typing" id="noText"></p>
-    <button class="back" onclick="goBack()">Go back</button>
-  </div>
+<div class="card" id="noPage" style="display:none;">
+  <img src="no-cat.jpg">
+  <p id="noText"></p>
+  <button class="back" onclick="goBack()">Go back</button>
 </div>
 
 <!-- END -->
-<div class="page" id="end">
-  <div class="card">
-    <p class="typing" id="endText"></p>
-    <button class="back" onclick="goBack()">Go back</button>
-  </div>
+<div class="card" id="end" style="display:none;">
+  <p id="endText"></p>
+  <button class="back" onclick="goBack()">Go back</button>
 </div>
 
-<canvas id="fireworks"></canvas>
-
 <script>
-/* hearts */
-for(let i=0;i<40;i++){
-  const h=document.createElement('div');
-  h.className='heart';
-  h.style.left=Math.random()*100+'%';
-  h.style.animationDuration=8+Math.random()*6+'s';
-  document.getElementById('hearts').appendChild(h);
-}
-
-/* history */
-const pageHistory=[];
-const start=document.getElementById('start');
-const q=document.getElementById('question');
-const y=document.getElementById('yes');
-const movie=document.getElementById('movie');
-const noPage=document.getElementById('no');
-const end=document.getElementById('end');
+/* page history */
+let pageHistory=[];
 
 function showPage(page,save=true){
-  [start,q,y,movie,noPage,end].forEach(p=>p.style.display='none');
-  page.style.display='flex';
+  start.style.display="none";
+  q.style.display="none";
+  y.style.display="none";
+  movie.style.display="none";
+  noPage.style.display="none";
+  end.style.display="none";
+  page.style.display="block";
   if(save) pageHistory.push(page);
+}
+
+/* text */
+const mainText=`I know you’re not romantically ready right now, and I respect that.
+
+You’re thought of fondly, and this was made with warmth, not expectation.
+
+Would you like to go on a date with me in the future when you are ready?`;
+
+const yesTextContent=`This genuinely makes me really happy.
+
+No rush at all.
+When the time feels right,
+I’d love to fly to your city Amman for a date.`;
+
+const movieText=`may I ask for another recommendation?
+
+Legally Blonde was 10/10`;
+
+const noTextContent=`Thank you for being honest.
+
+No pressure.
+No hard feelings.`;
+
+const endText=`Thank you for reading.`;
+
+/* typing */
+function typeText(el,text,speed=70){
+  el.textContent="";
+  const words=text.split(" ");
+  let i=0;
+  const t=setInterval(()=>{
+    el.textContent+=(i===0?"":" ")+words[i];
+    i++;
+    if(i>=words.length) clearInterval(t);
+  },speed);
+}
+
+/* navigation */
+function openStart(){
+  env.classList.add("open");
+  setTimeout(()=>{
+    showPage(q);
+    typeText(questionText,mainText);
+  },800);
+}
+
+function showYes(){
+  showPage(y);
+  typeText(yesText,yesTextContent);
+  startFireworks();
+}
+
+function showNo(){
+  showPage(noPage);
+  typeText(noText,noTextContent);
+}
+
+function goNext(){
+  stopFireworks();
+  showPage(movie);
+  typeText(movieTextEl,movieText);
+}
+
+function goEnd(){
+  showPage(end);
+  typeText(endTextEl,endText);
 }
 
 function goBack(){
@@ -313,85 +348,50 @@ function goBack(){
   if(prev) showPage(prev,false);
 }
 
-function openEnvelope(){
-  document.getElementById('env').classList.add('open');
-  setTimeout(()=>showQuestion(),900);
-}
-
-function showQuestion(){
-  showPage(q);
-  typeText(qText,
-`I know you’re not romantically ready right now, and I respect that.
-
-You’re thought of fondly, and this was made with warmth, not expectation.
-
-Would you like to go on a date with me in the future when you are ready?`);
-}
-
-function showYes(){
-  showPage(y);
-  startFireworks();
-  typeText(yesText,
-`This genuinely makes me really happy.
-
-No rush at all
-When the time feels right,
-I’d love to fly to your city Amman for a date`);
-}
-
-function showNo(){
-  showPage(noPage);
-  typeText(noText,
-`Thank you for being honest.
-
-No pressure.
-No hard feelings.`);
-}
-
-function goMovie(){
-  showPage(movie);
-  typeText(movieText,
-`May I ask for another recommendation?
-Legally Blonde was 10/10`);
-}
-
-function goEnd(){
-  showPage(end);
-  typeText(endText,`Thank you for reading.`);
-}
-
-/* typing */
-function typeText(el,text){
-  el.textContent='';
-  let i=0;
-  const speed=40;
-  const t=setInterval(()=>{
-    el.textContent+=text[i];
-    i++;
-    if(i>=text.length) clearInterval(t);
-  },speed);
-}
-
-/* fireworks (unchanged) */
-let fwInt;
+/* fireworks */
+let fw;
 function startFireworks(){
-  const c=document.getElementById('fireworks');
-  const ctx=c.getContext('2d');
-  c.width=innerWidth; c.height=innerHeight;
-  fwInt=setInterval(()=>{
-    ctx.fillStyle='rgba(0,0,0,0.2)';
-    ctx.fillRect(0,0,c.width,c.height);
-    ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
-    ctx.beginPath();
-    ctx.arc(Math.random()*c.width,Math.random()*c.height,4,0,Math.PI*2);
-    ctx.fill();
-  },50);
+  if(fw) return;
+  fw=setInterval(()=>{
+    const cx=Math.random()*innerWidth;
+    const cy=Math.random()*innerHeight*.6;
+    for(let i=0;i<30;i++){
+      const p=document.createElement("div");
+      p.className="particle";
+      p.style.background=`hsl(${Math.random()*360},100%,60%)`;
+      p.style.left=cx+"px";
+      p.style.top=cy+"px";
+      p.style.setProperty("--x",(Math.random()*500-250)+"px");
+      p.style.setProperty("--y",(Math.random()*500-250)+"px");
+      fireworks.appendChild(p);
+      setTimeout(()=>p.remove(),2000);
+    }
+  },800);
 }
 function stopFireworks(){
-  clearInterval(fwInt);
-  const c=document.getElementById('fireworks');
-  c.getContext('2d').clearRect(0,0,c.width,c.height);
+  clearInterval(fw);
+  fw=null;
+  fireworks.innerHTML="";
 }
+
+/* hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart-bg";
+  h.textContent="♥";
+  h.style.left=Math.random()*innerWidth+"px";
+  h.style.bottom="-30px";
+  h.style.fontSize=(18+Math.random()*14)+"px";
+  hearts.appendChild(h);
+  setTimeout(()=>h.remove(),18000);
+},1400);
+
+/* refs */
+const questionText=document.getElementById("questionText");
+const yesText=document.getElementById("yesText");
+const movieTextEl=document.getElementById("movieText");
+const noText=document.getElementById("noText");
+const endTextEl=document.getElementById("endText");
 </script>
 
 </body>
